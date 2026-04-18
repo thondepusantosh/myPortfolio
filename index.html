@@ -1,277 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Fixed viewport tag for better mobile scaling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Santosh Sri Manvik</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --text-primary: #e8e8e8;
+      --text-secondary: #777;
+      --dot-color: rgba(255,255,255,0.85);
+      --card-bg: rgba(255,255,255,0.03);
+      --card-border: #222;
+      --grid-color: rgba(255,255,255,0.04);
+    }
+    .light {
+      --bg: #f5f5f0;
+      --text-primary: #111;
+      --text-secondary: #666;
+      --dot-color: rgba(20,20,20,0.85);
+      --card-bg: rgba(0,0,0,0.03);
+      --card-border: #ddd;
+      --grid-color: rgba(0,0,0,0.05);
+    }
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
-  :root {
-    --bg: #0a0a0a;
-    --text-primary: #e8e8e8;
-    --text-secondary: #777;
-    --dot-color: rgba(255,255,255,0.85);
-    --border: #1a1a1a;
-    --card-bg: rgba(255,255,255,0.03);
-    --card-border: #222;
-    --grid-color: rgba(255,255,255,0.04);
-  }
-  .light {
-    --bg: #f5f5f0;
-    --text-primary: #111;
-    --text-secondary: #777;
-    --dot-color: rgba(20,20,20,0.85);
-    --border: #e0e0e0;
-    --card-bg: rgba(0,0,0,0.03);
-    --card-border: #ddd;
-    --grid-color: rgba(0,0,0,0.05);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--bg);
-    color: var(--text-primary);
-    line-height: 1.6;
-    transition: background 0.35s, color 0.35s;
-    position: relative;
-    overflow-x: hidden;
-  }
-  .grid-bg {
-    position: fixed; top:0; left:0; width:100%; height:100%;
-    background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 50px 50px;
-    z-index:0;
-    pointer-events:none;
-    transition: background-image 0.35s;
-  }
-  .scanline {
-    position: fixed; top:0; left:0; width:100%; height:100px;
-    background: linear-gradient(transparent, rgba(255,255,255,0.015), transparent);
-    pointer-events:none; z-index:999;
-    animation: scanline 8s linear infinite;
-  }
-  @keyframes scanline { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
-  .container { max-width:900px; margin:0 auto; padding:3.5rem 2rem 4rem; position:relative; z-index:1; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:5rem; }
-  .social-links { display:flex; gap:2rem; }
-  .social-links a {
-    color: var(--text-secondary); text-decoration:none; font-size:0.92rem; font-weight:400;
-    position:relative; transition: color 0.25s;
-  }
-  .social-links a::after {
-    content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px;
-    background: var(--dot-color); transition: width 0.3s;
-  }
-  .social-links a:hover { color: var(--text-primary); }
-  .social-links a:hover::after { width:100%; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
-  .theme-btn {
-    background: var(--card-bg); border:1px solid var(--card-border);
-    border-radius:20px; padding:5px 10px;
-    cursor:pointer; display:flex; align-items:center; gap:6px;
-    color: var(--text-secondary); font-size:13px; font-family: inherit;
-    transition: border-color 0.25s, color 0.25s;
-  }
-  .theme-btn:hover { border-color: var(--text-secondary); color: var(--text-primary); }
-  .theme-icon { font-size:14px; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.35s, color 0.35s;
+      overflow-x: hidden;
+      min-height: 100vh;
+      width: 100%;
+    }
 
-  .name-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:1.2rem; }
-  .pronounce-btn {
-    background: transparent; border:1px solid var(--card-border);
-    border-radius:50%; width:30px; height:30px; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition: border-color 0.25s, background 0.25s; flex-shrink:0;
-  }
-  .pronounce-btn:hover { border-color: var(--text-secondary); background: var(--card-bg); }
-  .pronounce-btn svg { width:14px; height:14px; fill: var(--text-secondary); }
-  .pronounce-btn.speaking { border-color: var(--dot-color); }
-  .pronounce-btn.speaking svg { fill: var(--text-primary); }
+    .grid-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-  .hero { margin-bottom:7rem; }
-  .hero h1 {
-    font-size:3.2rem; font-weight:300; line-height:1.2; letter-spacing:-0.02em; margin-bottom:0.3rem;
-  }
-  /* Secondary text: all increased by 2 units (0.125rem ≈ 2px) */
-  .hero-info { font-size:1.125rem; color: var(--text-secondary); margin-bottom:0.7rem; font-weight:300; }
-  .hero-tagline { font-size:1.125rem; color: var(--text-primary); font-weight:400; }
+    .scanline {
+      position: fixed; top: 0; left: 0; width: 100%; height: 80px;
+      background: linear-gradient(transparent, rgba(255,255,255,0.012), transparent);
+      pointer-events: none; z-index: 999;
+      animation: scanline 10s linear infinite;
+    }
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
 
-  .dotted-name {
-    font-weight:500;
-    background: none;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-    display: inline-block;
-  }
-  .dotted-name::after {
-    content: attr(data-text);
-    position: absolute; top:0; left:0;
-    color: transparent;
-    background-image: radial-gradient(circle, var(--dot-color) 1.2px, transparent 1.2px);
-    background-size: 4px 4px;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 5rem;
+      position: relative;
+      z-index: 1;
+    }
 
-  .cursor {
-    display:inline-block; width:2px; height:0.9em;
-    background: var(--dot-color); margin-left:4px;
-    animation: blink 1s step-end infinite; vertical-align:middle;
-  }
-  @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+    /* ── TOP BAR ── */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3.5rem;
+      gap: 1rem;
+    }
 
-  section { margin-bottom:5rem; }
-  h2 {
-    font-size:0.925rem; text-transform:uppercase; letter-spacing:0.15em;
-    color: var(--text-secondary); margin-bottom:1.3rem; font-weight:500;
-    position:relative; padding-left:2rem;
-  }
-  h2::before { content:'//'; position:absolute; left:0; color: var(--dot-color); opacity:0.5; }
-  .content { font-size:1.075rem; color: var(--text-primary); line-height:1.85; font-weight:300; padding-left:2rem; }
-  .status { color: var(--text-secondary); font-style:italic; }
+    .social-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
 
-  .work-items { display:flex; gap:1.2rem; flex-wrap:wrap; padding-left:2rem; }
-  .work-item {
-    background: var(--card-bg); padding:0.85rem 1.2rem;
-    border:1px solid var(--card-border); border-radius:4px;
-    font-size:1.005rem; font-weight:400; transition: all 0.25s;
-    position:relative; overflow:hidden; color: var(--text-primary);
-  }
-  .work-item::before {
-    content:''; position:absolute; top:0; left:0; width:2px; height:100%;
-    background: var(--dot-color); opacity:0.5; transform:scaleY(0); transition:transform 0.25s;
-  }
-  .work-item:hover { border-color: var(--text-secondary); transform:translateX(6px); background: var(--card-bg); }
-  .work-item:hover::before { transform:scaleY(1); }
+    .social-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      position: relative;
+      transition: color 0.25s;
+      white-space: nowrap;
+    }
+    .social-links a::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--dot-color);
+      transition: width 0.3s;
+    }
+    .social-links a:hover { color: var(--text-primary); }
+    .social-links a:hover::after { width: 100%; }
 
-  .influence { padding-left:2rem; font-size:1.075rem; line-height:1.85; font-weight:300; color: var(--text-primary); }
-  .influence strong { font-weight:500; }
+    .theme-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 6px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-family: inherit;
+      transition: border-color 0.25s, color 0.25s;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 36px;
+    }
+    .theme-btn:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+    .theme-icon { font-size: 13px; }
 
-  @media(max-width:600px) {
-    .hero h1 { font-size:2rem; }
-    .topbar { flex-direction:column; align-items:flex-start; gap:1rem; }
-    .work-items { flex-direction:column; }
-  }
-</style>
+    /* ── HERO ── */
+    .hero { margin-bottom: 5rem; }
 
-<div class="grid-bg"></div>
-<div class="scanline"></div>
-<div class="container">
-  <div class="topbar">
-    <nav class="social-links">
-      <a href="https://www.linkedin.com/in/santosh-sri-manvik/" target="_blank">LINKEDIN</a>
-      <a href="https://github.com/thondepusantosh" target="_blank">GITHUB</a>
-      <a href="mailto:santoshsrimanvik@gmail.com">CONTACT</a>
-    </nav>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">
-      <span class="theme-icon" id="themeIcon">🌙</span>
-      <span id="themeLabel">Light</span>
-    </button>
-  </div>
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
 
-  <div class="hero">
-    <div class="name-row">
-      <h1>Hey, I'm <span class="dotted-name" data-text="Santosh Sri Manvik">Santosh Sri Manvik</span><span class="cursor"></span></h1>
-      <button class="pronounce-btn" id="pronounceBtn" title="Pronounce my name" onclick="pronounceName()">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-        </svg>
+    .hero h1 {
+      font-size: clamp(1.65rem, 6vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-info {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+    .hero-tagline {
+      font-size: 1rem;
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    .dotted-name {
+      font-weight: 500;
+      background: none;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      position: relative;
+      display: inline-block;
+    }
+    .dotted-name::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      color: transparent;
+      background-image: radial-gradient(circle, var(--dot-color) 1.2px, transparent 1.2px);
+      background-size: 4px 4px;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px; height: 0.85em;
+      background: var(--dot-color);
+      margin-left: 3px;
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+
+    .pronounce-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      min-width: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.25s, background 0.25s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pronounce-btn:hover,
+    .pronounce-btn:active { border-color: var(--text-secondary); background: var(--card-bg); }
+    .pronounce-btn svg { width: 14px; height: 14px; fill: var(--text-secondary); }
+    .pronounce-btn.speaking { border-color: var(--dot-color); }
+    .pronounce-btn.speaking svg { fill: var(--text-primary); }
+
+    /* ── SECTIONS ── */
+    section { margin-bottom: 4rem; }
+
+    h2 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-secondary);
+      margin-bottom: 1.1rem;
+      font-weight: 500;
+      position: relative;
+      padding-left: 1.75rem;
+    }
+    h2::before {
+      content: '//';
+      position: absolute;
+      left: 0;
+      color: var(--dot-color);
+      opacity: 0.5;
+    }
+
+    .content {
+      font-size: 0.98rem;
+      color: var(--text-primary);
+      line-height: 1.85;
+      font-weight: 300;
+      padding-left: 1.75rem;
+    }
+    .status { color: var(--text-secondary); font-style: italic; }
+
+    .work-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-left: 1.75rem;
+    }
+
+    .work-item {
+      background: var(--card-bg);
+      padding: 0.9rem 1.1rem;
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      font-size: 0.92rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      transition: border-color 0.25s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .work-item::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 2px; height: 100%;
+      background: var(--dot-color);
+      opacity: 0.5;
+      transform: scaleY(0);
+      transition: transform 0.25s;
+    }
+    .work-item:hover,
+    .work-item:active {
+      border-color: var(--text-secondary);
+      transform: translateX(5px);
+    }
+    .work-item:hover::before,
+    .work-item:active::before { transform: scaleY(1); }
+
+    .influence {
+      padding-left: 1.75rem;
+      font-size: 0.98rem;
+      line-height: 1.85;
+      font-weight: 300;
+      color: var(--text-primary);
+    }
+    .influence strong { font-weight: 500; }
+
+    .footer {
+      padding-left: 1.75rem;
+      margin-top: 2rem;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      opacity: 0.5;
+    }
+
+    /* ── MOBILE TWEAKS ── */
+    @media (max-width: 600px) {
+      .container { padding: 2rem 1.25rem 4rem; }
+      .topbar { margin-bottom: 2.5rem; flex-direction: row; }
+      .name-row { gap: 8px; }
+      .hero { margin-bottom: 3.5rem; }
+      section { margin-bottom: 3rem; }
+      /* Ensure text doesn't overflow small screens */
+      .content, .influence, .work-items { padding-left: 1.25rem; }
+      h2 { padding-left: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanline"></div>
+
+  <div class="container">
+    <div class="topbar">
+      <nav class="social-links">
+        <a href="https://www.linkedin.com/in/santosh-sri-manvik/" target="_blank" rel="noopener">LINKEDIN</a>
+        <a href="https://github.com/thondepusantosh" target="_blank" rel="noopener">GITHUB</a>
+        <a href="mailto:santoshsrimanvik@gmail.com">CONTACT</a>
+      </nav>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">
+        <span class="theme-icon" id="themeIcon">🌙</span>
+        <span id="themeLabel">Light</span>
       </button>
     </div>
-    <p class="hero-info">I'm 18, from VIJAYAWADA</p>
-    <p class="hero-tagline">I enjoy building things</p>
+
+    <div class="hero">
+      <div class="name-row">
+        <h1>Hey, I'm <span class="dotted-name" data-text="Santosh Sri Manvik">Santosh Sri Manvik</span><span class="cursor"></span></h1>
+        <button class="pronounce-btn" id="pronounceBtn" title="Pronounce my name" onclick="pronounceName()">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+      <p class="hero-info">I'm 18, from VIJAYAWADA</p>
+      <p class="hero-tagline">I enjoy building things</p>
+    </div>
+
+    <section>
+      <h2>A Few Achievements:</h2>
+      <p class="content status">Yet to achieve (work in progress)</p>
+    </section>
+
+    <section>
+      <h2>Some Things I'm Working On:</h2>
+      <div class="work-items">
+        <div class="work-item">Tech — exploring different technologies and A.I</div>
+        <div class="work-item">Finance — exploring financial markets and instruments</div>
+        <div class="work-item">Full stack development — building end-to-end applications</div>
+        <div class="work-item">Quantitative Finance — mathematical models for financial analysis</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>About Me:</h2>
+      <p class="content">
+        I am a Computer Science student specializing in Artificial Intelligence and Machine Learning.
+        I'm passionate about building intelligent systems, exploring data-driven solutions, and
+        continuously learning new technologies.
+      </p>
+    </section>
+
+    <section>
+      <h2>My Influences:</h2>
+      <div class="influence">
+        I'm a fan of <strong>Naval Ravikanth</strong> and I deeply value high-agency thinking.
+        He taught me about wealth creation and decision-making. <strong>David Goggins</strong> inspired me about toughness, overcoming limits and building an unbreakable mindset.
+      </div>
+    </section>
+
+    <section>
+      <h2>My Philosophy:</h2>
+      <div class="influence">
+        I believe in high-agency thinking — taking ownership of outcomes. Influenced by thinkers like Naval Ravikanth.
+      </div>
+    </section>
+
+    <p class="footer">santoshsrimanvik.dev</p>
   </div>
 
-  <section>
-    <h2>A Few Achievements:</h2>
-    <p class="content status">Yet to achieve (work in progress)</p>
-  </section>
+  <script>
+    let isLight = false;
 
-  <section>
-    <h2>Some Things I'm Working On:</h2>
-    <div class="work-items">
-      <div class="work-item">Tech — exploring different technologies and A.I</div>
-      <div class="work-item">Finance — exploring financial markets and instruments</div>
-      <div class="work-item">Full stack development — building end-to-end applications</div>
-      <div class="work-item">Quantitative Finance — mathematical models for financial analysis</div>
-    </div>
-  </section>
+    const clickSound = (() => {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        return () => {
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.setValueAtTime(880, ctx.currentTime);
+          o.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.08);
+          g.gain.setValueAtTime(0.12, ctx.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+          o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.12);
+        };
+      } catch(e) { return () => {}; }
+    })();
 
-  <section>
-    <h2>About Me:</h2>
-    <p class="content">
-      I am a Computer Science student specializing in Artificial Intelligence and Machine Learning.
-      I'm passionate about building intelligent systems, exploring data-driven solutions, and
-      continuously learning new technologies.
-    </p>
-  </section>
-
-  <section>
-    <h2>My Influences:</h2>
-    <div class="influence">
-      I'm a fan of <strong>Naval Ravikanth</strong> and I deeply value high-agency thinking.
-      He taught me about wealth creation and decision-making. <strong>David Goggins</strong> inspired me about toughness, overcoming limits and building an unbreakable mindset.
-    </div>
-  </section>
-
-  <section>
-    <h2>My Philosophy:</h2>
-    <div class="influence">
-      I believe in high-agency thinking — taking ownership of outcomes. Influenced by thinkers like Naval Ravikanth.
-    </div>
-  </section>
-</div>
-
-<script>
-  let isLight = false;
-  const clickSound = (() => {
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      return () => {
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.connect(g); g.connect(ctx.destination);
-        o.frequency.setValueAtTime(880, ctx.currentTime);
-        o.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.08);
-        g.gain.setValueAtTime(0.15, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-        o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.12);
-      };
-    } catch(e) { return () => {}; }
-  })();
-
-  function toggleTheme() {
-    clickSound();
-    isLight = !isLight;
-    document.body.classList.toggle('light', isLight);
-    document.getElementById('themeIcon').textContent = isLight ? '☀️' : '🌙';
-    document.getElementById('themeLabel').textContent = isLight ? 'Dark' : 'Light';
-  }
-
-  let speaking = false;
-  function pronounceName() {
-    if (speaking) { window.speechSynthesis.cancel(); return; }
-    const btn = document.getElementById('pronounceBtn');
-    const utterance = new SpeechSynthesisUtterance('Sahn-tosh Shree Mahn-vik');
-    utterance.rate = 0.85;
-    utterance.pitch = 1.1;
-
-    function applyVoice() {
-      const voices = window.speechSynthesis.getVoices();
-      const britishFemale =
-        voices.find(v => v.lang === 'en-GB' && /female|woman|girl/i.test(v.name)) ||
-        voices.find(v => v.lang === 'en-GB') ||
-        voices.find(v => /british|uk/i.test(v.name)) ||
-        voices.find(v => v.lang.startsWith('en-'));
-      if (britishFemale) utterance.voice = britishFemale;
+    function toggleTheme() {
+      clickSound();
+      isLight = !isLight;
+      document.body.classList.toggle('light', isLight);
+      document.getElementById('themeIcon').textContent = isLight ? '☀️' : '🌙';
+      document.getElementById('themeLabel').textContent = isLight ? 'Dark' : 'Light';
     }
 
-    if (window.speechSynthesis.getVoices().length > 0) {
-      applyVoice();
-    } else {
-      window.speechSynthesis.onvoiceschanged = applyVoice;
-    }
+    let speaking = false;
+    function pronounceName() {
+      if (speaking) { window.speechSynthesis.cancel(); return; }
+      const btn = document.getElementById('pronounceBtn');
+      const utterance = new SpeechSynthesisUtterance('Sahn-tosh Shree Mahn-vik');
+      utterance.rate = 0.85;
+      utterance.pitch = 1.1;
 
-    utterance.onstart = () => { speaking = true; btn.classList.add('speaking'); };
-    utterance.onend = () => { speaking = false; btn.classList.remove('speaking'); };
-    utterance.onerror = () => { speaking = false; btn.classList.remove('speaking'); };
-    window.speechSynthesis.speak(utterance);
-  }
-</script>
+      function applyVoice() {
+        const voices = window.speechSynthesis.getVoices();
+        const britishFemale =
+          voices.find(v => v.lang === 'en-GB' && /female|woman|girl/i.test(v.name)) ||
+          voices.find(v => v.lang === 'en-GB') ||
+          voices.find(v => /british|uk/i.test(v.name)) ||
+          voices.find(v => v.lang.startsWith('en-'));
+        if (britishFemale) utterance.voice = britishFemale;
+      }
+
+      if (window.speechSynthesis.getVoices().length > 0) {
+        applyVoice();
+      } else {
+        window.speechSynthesis.onvoiceschanged = applyVoice;
+      }
+
+      utterance.onstart = () => { speaking = true; btn.classList.add('speaking'); };
+      utterance.onend = () => { speaking = false; btn.classList.remove('speaking'); };
+      utterance.onerror = () => { speaking = false; btn.classList.remove('speaking'); };
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
