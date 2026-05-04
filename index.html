@@ -377,7 +377,7 @@
       </button>
     </div>
 
-    <div class="hero">
+   <div class="hero">
       <div class="name-row">
         <h1>Hey, I'm <span>Santosh Sri Manvik</span><span class="cursor"></span></h1>
         <button class="pronounce-btn" id="pronounceBtn" title="Pronounce my name" onclick="pronounceName()">
@@ -409,7 +409,7 @@
       </div>
     </div>
 
-    <section>
+   <section>
       <h2>A Few Achievements:</h2>
       <p class="content status">Yet to achieve (work in progress)</p>
     </section>
@@ -423,6 +423,7 @@
         <div class="work-item">Quantitative Finance — mathematical models for financial analysis</div>
       </div>
     </section>
+
 
     <section>
       <h2>About Me:</h2>
@@ -452,26 +453,60 @@
   </div>
 
   <script>
+    let isLight = false;
+
+    const clickSound = (() => {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        return () => {
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.setValueAtTime(880, ctx.currentTime);
+          o.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.08);
+          g.gain.setValueAtTime(0.12, ctx.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+          o.start(ctx.currentTime); o.stop(ctx.currentTime + 0.12);
+        };
+      } catch(e) { return () => {}; }
+    })();
+
     function toggleTheme() {
-      const body = document.body;
-      const themeBtn = document.getElementById('themeBtn');
-      const themeIcon = document.getElementById('themeIcon');
-      const themeLabel = document.getElementById('themeLabel');
-      
-      body.classList.toggle('light');
-      
-      if (body.classList.contains('light')) {
-        themeIcon.textContent = '🌙';
-        themeLabel.textContent = 'Dark';
-      } else {
-        themeIcon.textContent = '☀️';
-        themeLabel.textContent = 'Light';
-      }
+      clickSound();
+      isLight = !isLight;
+      document.body.classList.toggle('light', isLight);
+      document.getElementById('themeIcon').textContent = isLight ? '☀️' : '🌙';
+      document.getElementById('themeLabel').textContent = isLight ? 'Dark' : 'Light';
     }
 
+    let speaking = false;
     function pronounceName() {
-      const msg = new SpeechSynthesisUtterance('Santosh Sri Manvik');
-      window.speechSynthesis.speak(msg);
+      if (speaking) { window.speechSynthesis.cancel(); return; }
+      const btn = document.getElementById('pronounceBtn');
+      const utterance = new SpeechSynthesisUtterance('San-tosh Sri Man-vik');
+      utterance.rate = 0.85;
+      utterance.pitch = 1.1;
+
+      function applyVoice() {
+        const voices = window.speechSynthesis.getVoices();
+        const britishFemale =
+          voices.find(v => v.lang === 'en-GB' && /female|woman|girl/i.test(v.name)) ||
+          voices.find(v => v.lang === 'en-GB') ||
+          voices.find(v => /british|uk/i.test(v.name)) ||
+          voices.find(v => v.lang.startsWith('en-'));
+        if (britishFemale) utterance.voice = britishFemale;
+      }
+
+      if (window.speechSynthesis.getVoices().length > 0) {
+        applyVoice();
+      } else {
+        window.speechSynthesis.onvoiceschanged = applyVoice;
+      }
+
+      utterance.onstart = () => { speaking = true; btn.classList.add('speaking'); };
+      utterance.onend = () => { speaking = false; btn.classList.remove('speaking'); };
+      utterance.onerror = () => { speaking = false; btn.classList.remove('speaking'); };
+      window.speechSynthesis.speak(utterance);
     }
 
     // Audio Player Logic
