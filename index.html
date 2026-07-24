@@ -135,8 +135,7 @@
       animation: fadeUp 0.7s var(--ease) forwards;
     }
     .topbar.reveal { animation-delay: 0.02s; }
-    .hero .name-row.reveal { animation-delay: 0.1s; }
-    .hero .hero-info.reveal { animation-delay: 0.18s; }
+    .hero .hero-header.reveal { animation-delay: 0.1s; }
     .hero .hero-tagline.reveal { animation-delay: 0.24s; }
     .hero .music-player.reveal { animation-delay: 0.32s; }
 
@@ -215,12 +214,51 @@
     /* ── HERO ── */
     .hero { margin-bottom: 3rem; }
 
+    .hero-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-text {
+      flex: 1 1 0%;
+      min-width: 0;
+    }
+
     .name-row {
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .avatar {
+      width: clamp(64px, 14vw, 132px);
+      height: clamp(64px, 14vw, 132px);
+      min-width: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      flex-shrink: 0;
+      margin-left: auto;
+      transition: border-color 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft), transform 0.3s var(--ease-soft);
+    }
+    body:not(.light) .avatar {
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 0 14px rgba(255,255,255,0.18), 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .light .avatar {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .avatar:hover {
+      border-color: var(--text-secondary);
+      transform: scale(1.05);
+    }
+    body:not(.light) .avatar:hover {
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,0.28), 0 4px 16px rgba(0,0,0,0.3);
     }
 
     .hero h1 {
@@ -550,15 +588,20 @@
     </div>
 
    <div class="hero">
-      <div class="name-row reveal">
-        <h1>Hey, I'm <span>Santosh Sri Manvik</span><span class="cursor"></span></h1>
-        <button class="pronounce-btn" id="pronounceBtn" title="Pronounce my name" onclick="pronounceName()">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-          </svg>
-        </button>
+      <div class="hero-header reveal">
+        <div class="hero-text">
+          <div class="name-row">
+            <h1>Hey, I'm <span>Santosh Sri Manvik</span><span class="cursor"></span></h1>
+            <button class="pronounce-btn" id="pronounceBtn" title="Pronounce my name" onclick="pronounceName()">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </button>
+          </div>
+          <p class="hero-info">I'm 18, from VIJAYAWADA</p>
+        </div>
+        <img src="me.png" alt="Santosh Sri Manvik" class="avatar" width="132" height="132" loading="eager" decoding="async">
       </div>
-      <p class="hero-info reveal">I'm 18, from VIJAYAWADA</p>
       <p class="hero-tagline reveal">I enjoy building things</p>
 
       <!-- APPLE MUSIC PLAYER -->
